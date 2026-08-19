@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/oxlint",
+  "plugins": {
+    "react": true,
+    "react-hooks": true,
+    "typescript": true,
+    "unicorn": true,
+    "import": true,
+    "jsx-a11y": true
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "import/order": "warn",
+    "unicorn/filename-case": "off"
+  },
+  "ignore": ["dist", "node_modules"]
+}

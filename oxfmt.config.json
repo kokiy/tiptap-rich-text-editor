@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/oxfmt",
+  "indentStyle": "space",
+  "indentWidth": 2,
+  "lineWidth": 80,
+  "semicolons": "always",
+  "quoteStyle": "double",
+  "trailingCommas": "all",
+  "ignore": ["dist", "node_modules"]
+}
