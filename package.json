@@ -11,7 +11,8 @@
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "deploy": "VITE_BASE=${BASE:-/koki-rich-text-editor/} pnpm run build && gh-pages -d dist"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -35,6 +36,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "highlight.js": "^11.12.0",
     "lucide-react": "^1.32.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
@@ -51,6 +53,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.5",
+    "gh-pages": "^6.3.0",
     "jsdom": "^30.0.1",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",

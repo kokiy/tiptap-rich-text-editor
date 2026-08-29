@@ -1,49 +1,51 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { highlightHtml } from "@/lib/html-highlight";
+import "highlight.js/styles/github-dark.css";
 import { Editor } from "@/components/editor/editor";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const initialContent = `
-<h2>Welcome to Koki Rich Text Editor 👋</h2>
-<p>This is a modern rich text editor built with <strong>TipTap</strong>, <strong>React</strong>, and <strong>shadcn/ui</strong>.</p>
-<p>Try out the features:</p>
+<h1>Welcome to the Editor 🎉</h1>
+<p>This is a <strong>rich text editor</strong> built with TipTap and shadcn/ui.</p>
+<p>Try typing, formatting text, or using the toolbar above.</p>
 <ul>
-  <li><strong>Bold</strong>, <em>italic</em>, <u>underline</u>, and <s>strikethrough</s></li>
-  <li>Headings, lists, blockquotes, and code blocks</li>
-  <li>Text color and highlight</li>
-  <li>Text alignment</li>
-  <li>Links and images</li>
-  <li>Find and replace</li>
+  <li>Bold, italic, underline</li>
+  <li>Headings, lists, quotes</li>
+  <li>Links, images, code</li>
 </ul>
-<blockquote>
-  <p>Select some text and use the toolbar to format it.</p>
-</blockquote>
+<blockquote>Press "/" to open the command menu.</blockquote>
 <p>Have fun editing! 🎉</p>
 `;
 
 function App() {
   const [content, setContent] = useState(initialContent);
 
+  const highlightedHtml = useMemo(() => highlightHtml(content.trim()), [content]);
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background">
       <header className="border-b">
-        <div className="container mx-auto py-4 px-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold">Koki Rich Text Editor</h1>
+        <div className="w-full px-4 md:px-8 py-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold">Editor</h1>
           <ThemeToggle />
         </div>
       </header>
-      <main className="container mx-auto py-8 px-4 max-w-4xl">
+      <main className="w-full px-4 md:px-8 py-6">
         <Editor
           initialContent={content}
           onChange={setContent}
           placeholder="Start typing..."
         />
         <div className="mt-6">
-          <details className="text-sm">
-            <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
+          <details>
+            <summary className="cursor-pointer text-sm text-muted-foreground">
               View HTML output
             </summary>
-            <pre className="mt-2 p-4 bg-muted rounded-md overflow-x-auto text-xs">
-              <code>{content}</code>
+            <pre className="mt-2 p-4 rounded-md overflow-x-auto text-xs [&_code]:bg-transparent">
+              <code
+                className="language-xml hljs"
+                dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+              />
             </pre>
           </details>
         </div>

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { FindAndReplacePluginKey } from "@tiptap/extension-find-and-replace";
 import { cn } from "@/lib/utils";
 import { useToolbar } from "@/components/editor/toolbar/toolbar-provider";
 
@@ -41,19 +42,21 @@ export function FindReplaceButton() {
     if (!open) return;
 
     const update = () => {
-      const storage = editor.storage.findAndReplace;
-      const total = storage.results.length;
-      const index = storage.currentIndex !== null ? storage.currentIndex + 1 : 0;
+      const pluginState = FindAndReplacePluginKey.getState(editor.state);
+      if (!pluginState) {
+        setResultInfo({ index: 0, total: 0 });
+        return;
+      }
+      const total = pluginState.results.length;
+      const index = pluginState.currentIndex !== null ? pluginState.currentIndex + 1 : 0;
       setResultInfo({ index, total });
     };
 
     update();
-    editor.on("update", update);
-    editor.on("selectionUpdate", update);
+    editor.on("transaction", update);
 
     return () => {
-      editor.off("update", update);
-      editor.off("selectionUpdate", update);
+      editor.off("transaction", update);
     };
   }, [editor, open]);
 
@@ -75,11 +78,36 @@ export function FindReplaceButton() {
   };
 
   const handleReplace = () => {
-    editor.commands.replace();
+    const pluginState = FindAndReplacePluginKey.getState(editor.state);
+    if (!pluginState || pluginState.results.length === 0) return;
+    if (pluginState.currentIndex === null || pluginState.currentIndex < 0) return;
+    const result = pluginState.results[pluginState.currentIndex];
+    if (!result) return;
+
+    editor.chain()
+      .focus()
+      .setTextSelection({ from: result.from, to: result.to })
+      .insertContent(replaceText)
+      .run();
+
+    // Re-trigger search to update results after replacement
+    editor.commands.setSearchTerm(searchText);
   };
 
   const handleReplaceAll = () => {
-    editor.commands.replaceAll();
+    const pluginState = FindAndReplacePluginKey.getState(editor.state);
+    if (!pluginState || pluginState.results.length === 0) return;
+
+    // Replace from last to first to preserve positions
+    const sorted = [...pluginState.results].sort((a, b) => b.from - a.from);
+    let tr = editor.state.tr;
+    for (const result of sorted) {
+      tr = tr.insertText(replaceText, result.from, result.to);
+    }
+    editor.view.dispatch(tr);
+
+    // Re-trigger search
+    editor.commands.setSearchTerm(searchText);
   };
 
   return (
@@ -119,6 +147,11 @@ export function FindReplaceButton() {
               className="h-9 flex-1"
               autoFocus
             />
+            {searchText && (
+              <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap px-1">
+                {resultInfo.total > 0 ? `${resultInfo.index}/${resultInfo.total}` : "0/0"}
+              </span>
+            )}
             <span className="text-xs text-muted-foreground min-w-[44px] text-center">
               {resultInfo.total > 0
                 ? `${resultInfo.index}/${resultInfo.total}`
