@@ -1,5 +1,7 @@
 # koki Rich Text Editor
 
+[![Demo](https://img.shields.io/badge/demo-live-green)](https://kokiy.github.io/koki-rich-text-editor/)
+
 基于 TipTap 3 + React 19 + shadcn/ui 的富文本编辑器。
 
 ## 特性
