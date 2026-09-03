@@ -1,103 +1,119 @@
 # koki Rich Text Editor
 
+[English](README.md) | [中文](README.zh-CN.md)
+
 [![Demo](https://img.shields.io/badge/demo-live-green)](https://kokiy.github.io/koki-rich-text-editor/)
+[![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-7-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TipTap](https://img.shields.io/badge/TipTap-3-ff6b6b?logo=tiptap)](https://tiptap.dev/)
+[![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-black?logo=shadcnui&logoColor=white)](https://ui.shadcn.com/)
 
-基于 TipTap 3 + React 19 + shadcn/ui 的富文本编辑器。
+A modern rich text editor built with TipTap 3, React 19, and shadcn/ui.
 
-## 特性
+![Demo](public/demo.png)
 
-- **TipTap 3.x** — 官方扩展驱动，ProseMirror 内核
-- **shadcn/ui + Tailwind v4** — 组件库与样式系统
-- **Lucide Icons** — 工具栏图标
-- **明暗主题切换** — CSS Variables 驱动
-- **Slash 命令菜单** — 输入 `/` 快速插入块级元素
-- **Bubble 浮动菜单** — 选中文本后出现格式化工具栏
-- **查找替换** — 支持大小写敏感、上一个/下一个、全部替换
-- **图片上传** — 本地文件选择 + base64 内嵌，预留上传接口
-- **表格 / 列表 / 引用 / 代码块** — 常用块级格式
-- **文字样式** — 粗体 / 斜体 / 下划线 / 删除线 / 颜色 / 字号
-- **对齐方式** — 左对齐 / 居中 / 右对齐 / 两端对齐
-- **撤销重做** — 完整历史记录
-- **Vitest + Testing Library** — 单元测试
-- **oxlint + oxfmt** — 代码检查与格式化
+## Features
 
-## 技术栈
+### Text Formatting
+- **Bold** / *Italic* / Underline / ~~Strikethrough~~
+- Text color, background color, font size
+- Subscript / superscript
 
-| 类别 | 技术 |
+### Block Elements
+- Headings (H1-H3)
+- Ordered / unordered lists
+- Block quotes
+- Code blocks
+- Dividers
+- Tables
+
+### Interactions
+- **Slash command menu** — type `/` for quick insert
+- **Find & replace** — case-sensitive, prev/next, replace all
+- **Image upload** — local file + base64, with upload hook
+- **Links** — insert / edit hyperlinks
+- **Alignment** — left / center / right / justify
+- **Undo / Redo**
+- **Light / dark theme toggle**
+
+## Tech Stack
+
+| Category | Technology |
 | --- | --- |
-| 构建工具 | Vite 8 |
-| 框架 | React 19 + TypeScript 7 |
-| 编辑器 | TipTap 3 (ProseMirror) |
-| UI | shadcn/ui + Tailwind CSS v4 |
-| 图标 | lucide-react |
-| 包管理 | pnpm |
+| Build tool | Vite 8 |
+| Framework | React 19 + TypeScript 7 |
+| Editor core | TipTap 3 (ProseMirror) |
+| UI components | shadcn/ui + Tailwind CSS v4 |
+| Icons | lucide-react |
+| Package manager | pnpm |
 | Lint / Format | oxlint / oxfmt |
-| 测试 | Vitest + Testing Library + jsdom |
+| Testing | Vitest + Testing Library + jsdom |
 
-## 快速开始
+## Getting Started
 
 ```bash
-# 安装依赖
+# Install dependencies
 pnpm install
 
-# 开发
+# Development
 pnpm dev
 
-# 构建
+# Build
 pnpm build
 
-# 预览
+# Preview
 pnpm preview
 
-# 单元测试
+# Unit tests
 pnpm test
 
-# 代码检查
+# Lint & format check
 pnpm lint
 pnpm fmt:check
 ```
 
-## 项目结构
+## Project Structure
 
 ```
 src/
 ├── components/
 │   ├── editor/
-│   │   ├── editor.tsx          # 编辑器主组件
-│   │   ├── editor-toolbar.tsx  # 工具栏容器
-│   │   ├── toolbar/            # 各工具栏按钮
-│   │   ├── menus/              # slash-menu / bubble-menu
+│   │   ├── editor.tsx          # Main editor component
+│   │   ├── editor-toolbar.tsx  # Toolbar container
+│   │   ├── toolbar/            # Individual toolbar buttons
+│   │   ├── menus/              # slash-menu
 │   │   └── find-replace.test.ts
-│   └── ui/                     # shadcn/ui 组件
+│   └── ui/                     # shadcn/ui components
 ├── extensions/
-│   └── image/                  # 自定义图片扩展
+│   └── image/                  # Custom image extension
 ├── lib/
-│   └── html-highlight.ts       # HTML 格式化与高亮
+│   └── html-highlight.ts       # HTML formatting & syntax highlighting
 ├── App.tsx
 ├── main.tsx
 └── index.css
 ```
 
-## 扩展
+## Extending
 
-编辑器以 TipTap extension 为单位组织功能。添加新功能时：
+Features are organized as TipTap extensions. To add a new feature:
 
-1. 安装官方扩展（优先使用 `@tiptap/extension-*`）
-2. 在 `src/components/editor/editor.tsx` 的 `extensions` 数组中注册
-3. 如需工具栏按钮，在 `src/components/editor/toolbar/` 下新增组件并在 `editor-toolbar.tsx` 中引入
+1. Install the official extension (prefer `@tiptap/extension-*`)
+2. Register it in the `extensions` array in `src/components/editor/editor.tsx`
+3. If a toolbar button is needed, add a new component under `src/components/editor/toolbar/` and include it in `editor-toolbar.tsx`
+
+## Deploy to GitHub Pages
+
+```bash
+# Default: deploy to /koki-rich-text-editor/ (repo name)
+pnpm run deploy
+
+# Custom base path
+BASE=/my-repo/ pnpm run deploy
+```
+
+The script builds `dist/` and pushes it to the `gh-pages` branch via `gh-pages`. After the first deploy, go to the repo's **Settings → Pages** and set the source to the `gh-pages` branch.
 
 ## License
 
 MIT
-
-## 部署到 GitHub Pages
-
-```bash
-# 默认部署到 /koki-rich-text-editor/ 路径（仓库名）
-pnpm run deploy
-
-# 自定义 base path
-BASE=/my-repo/ pnpm run deploy
-```
-
-脚本会先构建 `dist/`，再用 `gh-pages` 推送到 `gh-pages` 分支。首次部署后，在 GitHub 仓库的 **Settings → Pages** 中将 source 设为 `gh-pages` 分支即可。
