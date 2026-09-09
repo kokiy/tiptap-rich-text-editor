@@ -1,4 +1,4 @@
-# koki Rich Text Editor
+# Tiptap Rich Text Editor
 
 [English](README.md) | [中文](README.zh-CN.md)
 
