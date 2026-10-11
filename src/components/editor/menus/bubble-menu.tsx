@@ -24,8 +24,11 @@ export function EditorBubbleMenu({ editor }: BubbleMenuProps) {
       shouldShow={({ state }) => {
         const { from, to, empty } = state.selection;
         if (empty) return false;
-        // Only show for text selections
-        return from !== to;
+        let textOnly = true;
+        state.doc.nodesBetween(from, to, (node) => {
+          if (node.type.name === 'image') { textOnly = false; return false; }
+        });
+        return textOnly;
       }}
       options={{
         placement: "top",
